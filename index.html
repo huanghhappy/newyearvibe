@@ -38,7 +38,6 @@
 
     <style>
         body {
-            /* 背景紋理 */
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B91C1C' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
             font-family: "Zen Maru Gothic", sans-serif;
         }
@@ -181,7 +180,6 @@
     </footer>
 
     <script>
-        // Update slider values
         document.getElementById('familiarityRange').addEventListener('input', function(e) {
             document.getElementById('familiarityVal').innerText = e.target.value + "分";
         });
@@ -189,7 +187,6 @@
             document.getElementById('intensityVal').innerText = e.target.value + "分";
         });
 
-        // --- Mock AI Logic (Template Database) ---
         const templates = {
             polite: [
                 "哎呀，{target}您真會開玩笑，我這是在享受當下呢。",
@@ -283,21 +280,21 @@
             }, 100);
         }
 
-        // --- Image Generation Logic ---
         function generateImage() {
             const canvas = document.getElementById('memeCanvas');
             const ctx = canvas.getContext('2d');
             const text = document.getElementById('resultText').value;
 
-            // Clear and fill white base
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#fff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // Load Background (1-8)
-            const bgNum = Math.floor(Math.random() * 8) + 1; 
+            // 修改點2：支援到 15 張圖片
+            const bgNum = Math.floor(Math.random() * 15) + 1; 
             const img = new Image();
-            img.src = `background${bgNum}.png?t=${new Date().getTime()}`;
+            
+            // 修改點1：移除 ?t= 時間戳記，啟用快取功能以加速載入
+            img.src = `background${bgNum}.png`;
             
             img.onload = function() {
                 ctx.save();
@@ -313,13 +310,11 @@
             };
 
             function drawTextContent() {
-                // 1. Styling Main Text
-                ctx.fillStyle = "#B91C1C"; // Deep Red
+                ctx.fillStyle = "#B91C1C"; 
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
                 ctx.font = "bold 80px 'Noto Serif TC'"; 
                 
-                // Text Wrapping Logic
                 const maxWidth = 900;
                 const words = text.split('');
                 let line = '';
@@ -342,17 +337,13 @@
                 const totalHeight = lines.length * lineHeight;
                 let startY = (canvas.height - totalHeight) / 2 + 40;
 
-                // 2. Draw "Greetings" (早安，平安喜樂) - 修改點1：加入白框
                 ctx.font = "bold 60px 'Zen Maru Gothic'";
-                // 先畫白框
                 ctx.strokeStyle = "white";
                 ctx.lineWidth = 8;
                 ctx.strokeText("早安，平安喜樂", canvas.width/2, 100);
-                // 再畫金字
                 ctx.fillStyle = "#F59E0B"; 
                 ctx.fillText("早安，平安喜樂", canvas.width/2, 100);
 
-                // 3. Draw Main Body Text
                 ctx.shadowColor = "white";
                 ctx.shadowBlur = 15;
                 ctx.font = "bold 90px 'Noto Serif TC'";
@@ -365,14 +356,11 @@
                     ctx.fillText(l, canvas.width/2, startY + (i * lineHeight));
                 });
 
-                // 4. Draw Footer "認同請分享" - 修改點2：強制粗體以統一字型
-                // 改為 bold 40px，確保手機也抓到 700 字重
                 ctx.font = "bold 40px 'Zen Maru Gothic'"; 
                 ctx.fillStyle = "#555";
                 ctx.shadowBlur = 0;
                 ctx.fillText("認同請分享", canvas.width/2, canvas.height - 80);
 
-                // Export
                 const dataURL = canvas.toDataURL('image/png');
                 const finalImg = document.getElementById('finalImage');
                 finalImg.src = dataURL;

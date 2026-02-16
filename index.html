@@ -15,7 +15,7 @@
     <link rel="apple-touch-icon" href="logo.png">
     <meta name="theme-color" content="#B91C1C">
 
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Zen+Maru+Gothic:wght@700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@600;900&family=Zen+Maru+Gothic:wght@400;500;700&display=swap" rel="stylesheet">
     
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -29,6 +29,7 @@
                     },
                     fontFamily: {
                         serif: ['"Noto Serif TC"', 'serif'],
+                        // 確保圓體使用新載入的字重
                         round: ['"Zen Maru Gothic"', 'sans-serif'],
                     }
                 }
@@ -40,6 +41,8 @@
         body {
             /* 使用 SVG 作為輕量化背景紋理 */
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B91C1C' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            /* 確保使用圓體 */
+            font-family: "Zen Maru Gothic", sans-serif;
         }
         .slider-thumb::-webkit-slider-thumb {
             -webkit-appearance: none;
@@ -74,7 +77,7 @@
         
         <div class="bg-white p-6 rounded-2xl shadow-sm border border-red-100 text-center">
             <p class="text-gray-600 mb-2 font-bold text-lg">親戚拷問太煩人？😡</p>
-            <p class="text-sm text-gray-500 leading-relaxed">
+            <p class="text-sm text-gray-500 leading-relaxed font-medium">
                 輸入對話，讓AI用幽默替你優雅反擊<br>
                 一鍵生成長輩圖回敬，讓家庭群組「和樂融融」😊
             </p>
@@ -84,7 +87,7 @@
             
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">對象是誰？ (例如：三姑六婆)</label>
-                <input type="text" id="targetInput" placeholder="輸入親戚稱謂..." class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cnyRed focus:border-cnyRed outline-none transition">
+                <input type="text" id="targetInput" placeholder="輸入親戚稱謂..." class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cnyRed focus:border-cnyRed outline-none transition font-medium">
             </div>
 
             <div>
@@ -101,7 +104,7 @@
 
             <div>
                 <label class="block text-sm font-bold text-gray-700 mb-1">他說了什麼鬼話？</label>
-                <textarea id="questionInput" rows="2" placeholder="例如：什麼時候要結婚？年終領多少？" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cnyRed outline-none transition"></textarea>
+                <textarea id="questionInput" rows="2" placeholder="例如：什麼時候要結婚？年終領多少？" class="w-full p-3 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cnyRed outline-none transition font-medium"></textarea>
             </div>
 
             <div>
@@ -109,23 +112,23 @@
                 <div class="grid grid-cols-2 gap-2">
                     <label class="cursor-pointer">
                         <input type="radio" name="style" value="polite" class="peer sr-only" checked>
-                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition">😊 親切禮貌</div>
+                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition font-medium">😊 親切禮貌</div>
                     </label>
                     <label class="cursor-pointer">
                         <input type="radio" name="style" value="fake" class="peer sr-only">
-                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition">🎭 客套寒暄</div>
+                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition font-medium">🎭 客套寒暄</div>
                     </label>
                     <label class="cursor-pointer">
                         <input type="radio" name="style" value="sarcasm" class="peer sr-only">
-                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition">🙄 白眼嘲諷</div>
+                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition font-medium">🙄 白眼嘲諷</div>
                     </label>
                     <label class="cursor-pointer">
                         <input type="radio" name="style" value="war" class="peer sr-only">
-                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition">💥 兩敗俱傷</div>
+                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition font-medium">💥 兩敗俱傷</div>
                     </label>
                     <label class="cursor-pointer col-span-2">
                         <input type="radio" name="style" value="freestyle" class="peer sr-only">
-                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition">🦄 自由發揮 (隨機靈魂)</div>
+                        <div class="p-2 text-center text-sm border rounded-lg peer-checked:bg-red-50 peer-checked:border-cnyRed peer-checked:text-cnyRed transition font-medium">🦄 自由發揮 (隨機靈魂)</div>
                     </label>
                 </div>
             </div>
@@ -160,7 +163,7 @@
 
         <div id="imageSection" class="hidden flex-col items-center space-y-4 animate-fade-in-up">
             <div class="text-center">
-                <p class="text-sm text-gray-500 mb-2">長按圖片即可儲存或是分享 👇</p>
+                <p class="text-sm text-gray-500 mb-2 font-medium">長按圖片即可儲存或是分享 👇</p>
                 <img id="finalImage" class="w-full rounded-lg shadow-xl border-4 border-white" alt="Generated Image">
             </div>
             <a id="downloadLink" download="cny-attack.png" class="hidden w-full py-3 bg-green-600 text-white font-bold rounded-xl shadow-md text-center">
@@ -186,7 +189,7 @@
             document.getElementById('intensityVal').innerText = e.target.value + "分";
         });
 
-        // --- Mock AI Logic (Template Database - Expanded to 50 total) ---
+        // --- Mock AI Logic (Template Database - 50 total) ---
         const templates = {
             polite: [
                 "哎呀，{target}您真會開玩笑，我這是在享受當下呢。",
@@ -252,74 +255,73 @@
 
         function generateResponse() {
             const target = document.getElementById('targetInput').value || "親戚";
-            // questionInput 雖然沒用到，但留著讓使用者有發洩感
-            // const question = document.getElementById('questionInput').value; 
             const style = document.querySelector('input[name="style"]:checked').value;
             const intensity = parseInt(document.getElementById('intensityRange').value);
             
-            // 簡單的邏輯：如果力度很高，自動切換到更激進的語氣，即使用戶選了禮貌
             let effectiveStyle = style;
             if (intensity > 8 && style === 'polite') effectiveStyle = 'sarcasm';
             if (intensity > 9 && style === 'fake') effectiveStyle = 'war';
 
-            
-            // 隨機選取模板 (現在每個分類有10個選項)
             const options = templates[effectiveStyle];
             let response = options[Math.floor(Math.random() * options.length)];
             
-            // 替換變數
             response = response.replace(/{target}/g, target);
 
-            // 根據力度添加額外語氣詞
             if (intensity > 7) response += " 🙄";
             else if (intensity < 3) response += " 😊";
 
-            // 顯示結果
             document.getElementById('resultText').value = response;
             const resultSection = document.getElementById('resultSection');
             resultSection.classList.remove('hidden');
             
-            // 重新觸發動畫
             resultSection.classList.remove('animate-fade-in-up');
             void resultSection.offsetWidth; // trigger reflow
             resultSection.classList.add('animate-fade-in-up');
 
-            // 滾動到結果區
             setTimeout(() => {
                 resultSection.scrollIntoView({behavior: 'smooth', block: 'center'});
             }, 100);
         }
 
-        // --- Image Generation Logic (Unchanged) ---
+        // --- Image Generation Logic (修正點2：支援8張背景圖與錯誤處理) ---
         function generateImage() {
             const canvas = document.getElementById('memeCanvas');
             const ctx = canvas.getContext('2d');
             const text = document.getElementById('resultText').value;
 
+            // 先清空並填充白色背景作為基底
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.fillStyle = "#fff";
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
+
             // 1. Load Background
-            // 模擬隨機背景：假設有 background1.png 到 background3.png
-            const bgNum = Math.floor(Math.random() * 3) + 1; 
+            // 修改點：隨機範圍改為 1 到 8
+            const bgNum = Math.floor(Math.random() * 8) + 1; 
             const img = new Image();
-            // 請確保資料夾內有 background1.png, background2.png, background3.png
-            img.src = `background${bgNum}.png`; 
+            // 加入時間戳記避免緩存問題 (可選)
+            img.src = `background${bgNum}.png?t=${new Date().getTime()}`;
             
             img.onload = function() {
-                // Clear canvas
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-                // Draw Background with Opacity
+                // Draw Background with Opacity OVER the white base
                 ctx.save();
                 ctx.globalAlpha = 0.3; // 30% opacity
-                ctx.drawImage(img, 0, 0, 1080, 1080);
-                
-                // Fallback fill if image fails or transparent
-                ctx.fillStyle = "#fff";
-                ctx.globalCompositeOperation = "destination-over";
-                ctx.fillRect(0,0,1080,1080);
+                ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 ctx.restore();
+                // 圖片載入成功後，繪製文字
+                drawTextContent();
+            };
+            
+            // Error handling: 如果背景圖載入失敗，至少還會顯示白色背景與文字
+            img.onerror = function() {
+                console.error(`Background image (background${bgNum}.png) failed to load. Using white background.`);
+                // 圖片失敗，直接繪製文字
+                drawTextContent();
+            };
 
-                // 2. Styling Text
-                ctx.fillStyle = "#B91C1C"; // Deep Red Text
+            // 將繪製文字的邏輯獨立出來，方便重複呼叫
+            function drawTextContent() {
+                 // 2. Styling Text
+                 ctx.fillStyle = "#B91C1C"; // Deep Red Text
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
                 // 長輩圖就是要用宋體/明體
@@ -392,18 +394,7 @@
 
                 const dlLink = document.getElementById('downloadLink');
                 dlLink.href = dataURL;
-            };
-            
-            // Error handling for missing background images
-            img.onerror = function() {
-                const gradient = ctx.createLinearGradient(0, 0, 1080, 1080);
-                gradient.addColorStop(0, "#ffcccc");
-                gradient.addColorStop(1, "#ffe6e6");
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, 1080, 1080);
-                // Trigger onload manually to draw text even without bg image
-                img.onload(); 
-            };
+            }
         }
     </script>
 </body>

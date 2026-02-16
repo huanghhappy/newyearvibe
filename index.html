@@ -29,7 +29,6 @@
                     },
                     fontFamily: {
                         serif: ['"Noto Serif TC"', 'serif'],
-                        // 確保圓體使用新載入的字重
                         round: ['"Zen Maru Gothic"', 'sans-serif'],
                     }
                 }
@@ -39,9 +38,8 @@
 
     <style>
         body {
-            /* 使用 SVG 作為輕量化背景紋理 */
+            /* 背景紋理 */
             background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23B91C1C' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-            /* 確保使用圓體 */
             font-family: "Zen Maru Gothic", sans-serif;
         }
         .slider-thumb::-webkit-slider-thumb {
@@ -54,7 +52,6 @@
             border-radius: 50%;
             border: 2px solid #F59E0B;
         }
-        /* 簡單的進場動畫 */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
@@ -154,10 +151,13 @@
             <h3 class="font-bold text-gray-800 mb-2">編輯你的回覆：</h3>
             <textarea id="resultText" rows="4" class="w-full p-3 bg-gray-50 border border-gray-300 rounded-xl focus:ring-2 focus:ring-cnyRed outline-none font-serif text-lg leading-relaxed text-gray-700"></textarea>
             
-            <div class="mt-4 flex gap-2">
-                <button onclick="generateImage()" class="flex-1 py-3 bg-cnyGold text-white font-bold rounded-xl shadow-md hover:bg-yellow-600 transition">
+            <div class="mt-4 flex flex-col gap-2">
+                <button onclick="generateImage()" class="w-full py-3 bg-cnyGold text-white font-bold rounded-xl shadow-md hover:bg-yellow-600 transition flex items-center justify-center gap-2">
                     📸 製作長輩圖
                 </button>
+                <p class="text-xs text-gray-500 text-center mt-1">
+                    平安喜樂背景有時需較長時間渲染，請耐心等候製作 🪷
+                </p>
             </div>
         </div>
 
@@ -181,7 +181,7 @@
     </footer>
 
     <script>
-        // Update slider values visually
+        // Update slider values
         document.getElementById('familiarityRange').addEventListener('input', function(e) {
             document.getElementById('familiarityVal').innerText = e.target.value + "分";
         });
@@ -189,7 +189,7 @@
             document.getElementById('intensityVal').innerText = e.target.value + "分";
         });
 
-        // --- Mock AI Logic (Template Database - 50 total) ---
+        // --- Mock AI Logic (Template Database) ---
         const templates = {
             polite: [
                 "哎呀，{target}您真會開玩笑，我這是在享受當下呢。",
@@ -275,7 +275,7 @@
             resultSection.classList.remove('hidden');
             
             resultSection.classList.remove('animate-fade-in-up');
-            void resultSection.offsetWidth; // trigger reflow
+            void resultSection.offsetWidth;
             resultSection.classList.add('animate-fade-in-up');
 
             setTimeout(() => {
@@ -283,48 +283,40 @@
             }, 100);
         }
 
-        // --- Image Generation Logic (修正點2：支援8張背景圖與錯誤處理) ---
+        // --- Image Generation Logic ---
         function generateImage() {
             const canvas = document.getElementById('memeCanvas');
             const ctx = canvas.getContext('2d');
             const text = document.getElementById('resultText').value;
 
-            // 先清空並填充白色背景作為基底
+            // Clear and fill white base
             ctx.clearRect(0, 0, canvas.width, canvas.height);
             ctx.fillStyle = "#fff";
             ctx.fillRect(0, 0, canvas.width, canvas.height);
 
-            // 1. Load Background
-            // 修改點：隨機範圍改為 1 到 8
+            // Load Background (1-8)
             const bgNum = Math.floor(Math.random() * 8) + 1; 
             const img = new Image();
-            // 加入時間戳記避免緩存問題 (可選)
             img.src = `background${bgNum}.png?t=${new Date().getTime()}`;
             
             img.onload = function() {
-                // Draw Background with Opacity OVER the white base
                 ctx.save();
-                ctx.globalAlpha = 0.3; // 30% opacity
+                ctx.globalAlpha = 0.3; 
                 ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
                 ctx.restore();
-                // 圖片載入成功後，繪製文字
                 drawTextContent();
             };
             
-            // Error handling: 如果背景圖載入失敗，至少還會顯示白色背景與文字
             img.onerror = function() {
                 console.error(`Background image (background${bgNum}.png) failed to load. Using white background.`);
-                // 圖片失敗，直接繪製文字
                 drawTextContent();
             };
 
-            // 將繪製文字的邏輯獨立出來，方便重複呼叫
             function drawTextContent() {
-                 // 2. Styling Text
-                 ctx.fillStyle = "#B91C1C"; // Deep Red Text
+                // 1. Styling Main Text
+                ctx.fillStyle = "#B91C1C"; // Deep Red
                 ctx.textAlign = "center";
                 ctx.textBaseline = "middle";
-                // 長輩圖就是要用宋體/明體
                 ctx.font = "bold 80px 'Noto Serif TC'"; 
                 
                 // Text Wrapping Logic
@@ -346,38 +338,41 @@
                 }
                 lines.push(line);
 
-                // Draw Text Lines
                 const lineHeight = 110;
                 const totalHeight = lines.length * lineHeight;
                 let startY = (canvas.height - totalHeight) / 2 + 40;
 
-                // Add "Greetings" decoration
+                // 2. Draw "Greetings" (早安，平安喜樂) - 修改點1：加入白框
                 ctx.font = "bold 60px 'Zen Maru Gothic'";
-                ctx.fillStyle = "#F59E0B"; // Gold
+                // 先畫白框
+                ctx.strokeStyle = "white";
+                ctx.lineWidth = 8;
+                ctx.strokeText("早安，平安喜樂", canvas.width/2, 100);
+                // 再畫金字
+                ctx.fillStyle = "#F59E0B"; 
                 ctx.fillText("早安，平安喜樂", canvas.width/2, 100);
 
-                // Main Text Shadow & Stroke
+                // 3. Draw Main Body Text
                 ctx.shadowColor = "white";
                 ctx.shadowBlur = 15;
                 ctx.font = "bold 90px 'Noto Serif TC'";
-                ctx.fillStyle = "#B00"; // Text Color
+                ctx.fillStyle = "#B00"; 
 
                 lines.forEach((l, i) => {
-                    // White stroke for readability
                     ctx.strokeStyle = "white";
                     ctx.lineWidth = 12;
                     ctx.strokeText(l, canvas.width/2, startY + (i * lineHeight));
-                    // Main text fill
                     ctx.fillText(l, canvas.width/2, startY + (i * lineHeight));
                 });
 
-                // Add "認同請分享" footer
-                ctx.font = "40px 'Zen Maru Gothic'";
+                // 4. Draw Footer "認同請分享" - 修改點2：強制粗體以統一字型
+                // 改為 bold 40px，確保手機也抓到 700 字重
+                ctx.font = "bold 40px 'Zen Maru Gothic'"; 
                 ctx.fillStyle = "#555";
                 ctx.shadowBlur = 0;
                 ctx.fillText("認同請分享", canvas.width/2, canvas.height - 80);
 
-                // 3. Export to Image
+                // Export
                 const dataURL = canvas.toDataURL('image/png');
                 const finalImg = document.getElementById('finalImage');
                 finalImg.src = dataURL;
@@ -385,9 +380,8 @@
                 const imageSection = document.getElementById('imageSection');
                 imageSection.classList.remove('hidden');
                 
-                // 重新觸發動畫
                 imageSection.classList.remove('animate-fade-in-up');
-                void imageSection.offsetWidth; // trigger reflow
+                void imageSection.offsetWidth;
                 imageSection.classList.add('animate-fade-in-up');
 
                 imageSection.scrollIntoView({behavior: 'smooth', block: 'center'});
